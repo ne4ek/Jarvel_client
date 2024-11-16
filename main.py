@@ -1,15 +1,10 @@
-from telethon import TelegramClient, events, sync
 from dotenv import load_dotenv
 import os
+from config import client
 
 load_dotenv()
 
-API_ID = os.getenv("API_ID")
-API_HASH = os.getenv("API_HASH")
 PHONE_NUMBER = os.getenv("PHONE_NUMBER")
-
-
-client = TelegramClient('session_name', API_ID, API_HASH)
 
 async def main():
     await client.connect()

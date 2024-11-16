@@ -136,3 +136,4 @@ src/test.py
 */__pycache__/
 *.log
 *.session
+storage/*
