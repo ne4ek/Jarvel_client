@@ -2,3 +2,5 @@ import os
 
 DIRNAME = os.path.dirname(__file__)
 MAX_MESSAGE_LENGTH = 4096
+
+MAX_FILE_SIZE_FOR_OPENAI_TRANSCRIBER = 26214400

@@ -1,17 +1,17 @@
 from openai import AsyncOpenAI
-from dotenv import load_dotenv
-import torch
+from application.entity.video_transcriber import VideoTranscriber
 import os
+from icecream import ic
+from dotenv import load_dotenv
 load_dotenv()
 
 
-class VideoTranscriber:
+class OnlineVideoTranscriber(VideoTranscriber):
     def __init__(self, trancriber_model="whisper-1", promt="", gpt_api_key=os.getenv("GPT_API_KEY")):
-        self.openAI_client = AsyncOpenAI(gpt_api_key)
+        self.openAI_client = AsyncOpenAI(api_key=gpt_api_key)
         self.trancriber_model = trancriber_model 
         self.promt = promt
 
-    '''Transcribe only 'mp3' '''
     async def transcribe(self, path: str):
         saved_file = open(path, "rb")
         transcription = await self.openAI_client.audio.transcriptions.create(
@@ -20,4 +20,5 @@ class VideoTranscriber:
             response_format="text",
             prompt=self.promt,
         )
+        ic(transcription)
         return transcription
