@@ -1,6 +1,7 @@
 .env strucure
 
 API_ID=
+
 API_HASH=
 
 GPT_API_KEY=
