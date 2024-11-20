@@ -36,8 +36,10 @@ class MeetSummarizer:
 
     async def __get_transcribed_telegram_message(self, path: str):
         try:
+            file_size = os.path.getsize(path)
+            ic(file_size)
             transcriber = OnlineVideoTranscriber() \
-            if os.path.getsize(path) <= MAX_FILE_SIZE_FOR_OPENAI_TRANSCRIBER \
+            if file_size < MAX_FILE_SIZE_FOR_OPENAI_TRANSCRIBER \
             else OfflineVideoTranscriber()
             transcribed_telegram_message = await transcriber.transcribe(path)
         except Exception as e:
@@ -57,9 +59,10 @@ class MeetSummarizer:
         fp_disk = os.path.join(DIRNAME, "storage", str(file_name).split(".")[0] + ".mp3")
 
         process = (ffmpeg.input(temp)
-                   .output(fp_disk, format="mp3")
-                   .run_async(overwrite_output=True, quiet=True))
+                   .output(fp_disk, format="mp3", bitrate='64k', ar=22050, ac=1)
+                   .run_async(overwrite_output=True))
 
+        ic("ffmpeg")
         await asyncio.get_event_loop().run_in_executor(None, process.wait)
         os.remove(temp)
         return fp_disk

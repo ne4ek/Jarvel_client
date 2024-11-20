@@ -13,12 +13,12 @@ class OnlineVideoTranscriber(VideoTranscriber):
         self.promt = promt
 
     async def transcribe(self, path: str):
-        saved_file = open(path, "rb")
-        transcription = await self.openAI_client.audio.transcriptions.create(
-            model = self.trancriber_model,
-            file = saved_file,
-            response_format="text",
-            prompt=self.promt,
-        )
-        ic(transcription)
-        return transcription
+        with open(path, "rb") as saved_file:
+            transcription = await self.openAI_client.audio.transcriptions.create(
+                model = self.trancriber_model,
+                file = saved_file,
+                response_format="text",
+                prompt=self.promt,
+            )
+            ic(transcription)
+            return transcription
