@@ -1,4 +1,4 @@
-.env strucure
+.env structure 
 
 API_ID=
 
