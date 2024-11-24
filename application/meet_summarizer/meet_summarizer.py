@@ -2,6 +2,7 @@ from application.meet_summarizer.online_video_transcriber import OnlineVideoTran
 from application.meet_summarizer.offline_video_transcriber import OfflineVideoTranscriber
 from consts import DIRNAME, MAX_FILE_SIZE_FOR_OPENAI_TRANSCRIBER
 from openai import AsyncOpenAI
+from application.exceptions import FileSizeTooBigForOpenaiTranscriber
 import ffmpeg
 import os
 from icecream import ic
@@ -38,9 +39,8 @@ class MeetSummarizer:
         try:
             file_size = os.path.getsize(path)
             ic(file_size)
-            if file_size < MAX_FILE_SIZE_FOR_OPENAI_TRANSCRIBER:
-                #TODO make custom error 
-                raise ValueError
+            if file_size > MAX_FILE_SIZE_FOR_OPENAI_TRANSCRIBER:
+                raise FileSizeTooBigForOpenaiTranscriber()
             transcriber = OnlineVideoTranscriber() 
             transcribed_telegram_message = await transcriber.transcribe(path)
         except Exception as e:
